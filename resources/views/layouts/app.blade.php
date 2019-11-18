@@ -19,6 +19,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <script src="https://cdn.tiny.cloud/1/fl5mbztq96fgmg77dxwtmg123pvbbhifraxm3ftnslh82s5g/tinymce/5/tinymce.min.js">
+    </script>
 </head>
 
 <body>
@@ -87,6 +90,11 @@
             @yield('posts')
         </div>
     </div>
+    <script>
+    tinymce.init({
+        selector: '#mytextarea'
+    });
+    </script>
 </body>
 
 </html>

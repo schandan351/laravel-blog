@@ -6,7 +6,7 @@
 {{Form::label('title','Title')}}
 {{Form::text('title','',['class'=>'form-control','placeholder'=>'Title'])}}
 {{Form::label('body','Body')}}
-{{Form::textarea('body','',['class'=>'form-control','placeholder'=>'body'])}}
+{{Form::textarea('body','',['id'=>'mytextarea','class'=>'form-control','placeholder'=>'body'])}}
 {{Form::submit('Post',['class'=>'btn btn-primary btn-lg mt-3'])}}
 {!! Form::close() !!}
 @endsection
