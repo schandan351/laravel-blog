@@ -4,7 +4,7 @@
 <div class="container">
    <div class="row">
 
-        @if(count($posts) > 1)
+        @if(count($posts) > 0)
 
             @foreach($posts as $post)
                 <div class="card mt-3 mr-3" style="width: 18rem;">
@@ -17,7 +17,7 @@
                 </div>
 
             @endforeach
-
+            {{$posts->links()}}
         
         @else
 

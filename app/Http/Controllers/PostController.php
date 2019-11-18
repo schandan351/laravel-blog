@@ -13,7 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {   
-        $posts=Post::orderBy('created_at','asc')->get();
+        $posts=Post::orderBy('created_at','asc')->paginate(6);
         return view('posts.index')->with('posts',$posts);
     }
 
@@ -24,7 +24,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -35,7 +35,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'title'=>'required',
+            'body'=>'required'
+        ]);
+
+        
     }
 
     /**

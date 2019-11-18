@@ -77,6 +77,7 @@
         </main>
 
         <main class="col-md-6" >
+            @include('layouts.messages')
             @yield('posts')
         </main>
     </div>
