@@ -9,12 +9,15 @@
 
                 <div class="card-body">
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
                     @endif
+                    <a href="/posts/create" class="btn btn-primary">Create</a>
 
-                    You are logged in!
+                    @foreach($posts as $post)
+                    <p>$post->title</p>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -26,4 +29,3 @@
 
 
 @endsection
-

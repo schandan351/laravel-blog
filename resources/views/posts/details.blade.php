@@ -7,11 +7,13 @@
     <p>Posted By: <a href="">default</a></p>
     <p>{!!$posts->body!!}</p>
 
+    @if(!Auth::guest())
     <a href="/posts/{{$posts->id}}/edit" class="btn btn-primary">Edit</a>
-    {!!Form::open(['action'=>['PostController@destroy',$posts->id],'method'=>'POST','class'=>'pull-right'])!!}
+    {!!Form::open(['action'=>['PostController@destroy',$posts->id],'method'=>'POST','class'=>'float-right'])!!}
     {{Form::hidden('_method','DELETE')}}
     {{Form::submit('Delete',['class'=>'btn btn-danger'])}}
     {!!Form::close()!!}
+    @endif
 </div>
 
 @endsection
