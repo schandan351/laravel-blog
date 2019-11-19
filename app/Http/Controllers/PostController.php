@@ -7,6 +7,8 @@ use App\Post;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
+
+
 class PostController extends Controller
 {
     /**
@@ -37,7 +39,9 @@ class PostController extends Controller
 
     public function search(Request $request){
         $search=$request->get('search');
-        $posts=DB::table('posts')->where('title','LIKE','%'.$search.'%')->paginate(3);
+        $posts=DB::table('posts')->where('body','LIKE','%'.$search.'%')->orWhere('title','LIKE','%'.$search.'%')->paginate(10);
+
+
         return view('posts.index',['posts'=>$posts]);
     }
 
@@ -52,15 +56,19 @@ class PostController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'body' => 'required',
+            
         ]);
 
         $posts = new Post();
         $posts->title = $request->input('title');
         $posts->body = $request->input('body');
+       
         $posts->save();
         return redirect('/posts')->with('success', 'Post created');
 
     }
+
+    
 
     /**
      * Display the specified resource.

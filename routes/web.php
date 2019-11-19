@@ -25,3 +25,4 @@ Route::get('dashboard', 'DashBoardController@index')->name('dashboard');
 Route::resource('posts','PostController');
 
 Route::get('/search','PostController@search');
+
