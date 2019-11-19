@@ -15,13 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test',function(){
-    return "hello enginerrrs";
-});
-Route::redirect('/home','/');
+
+Route::redirect('/','/posts');
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('dashboard', 'DashBoardController@index')->name('dashboard');
 
 Route::resource('posts','PostController');
+
+Route::get('/search','PostController@search');

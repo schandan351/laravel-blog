@@ -5,18 +5,23 @@
     <div class="row">
         <h1>Posts</h1>
     </div>
-    <div class="row col-md-10">
+    <div class="row ">
         @if(count($posts) > 0)
 
         @foreach($posts as $post)
-        <div class="card mt-3 mr-3" style="width: 14rem;">
+      
+            <div class="col-md-4">
+            <div class="card mb-4">
             <img src="https://picsum.photos/id/248/200/200" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">{{$post->title}}</h5>
-                <p class="card-text">{!!$post->body!!}</p>
+                <p class="card-text">{!!Str::limit($post->body,50)!!}</p>
                 <a href="/posts/{{$post->id}}" class="btn btn-primary">View</a>
             </div>
         </div>
+            </div>
+
+       
 
         @endforeach
 

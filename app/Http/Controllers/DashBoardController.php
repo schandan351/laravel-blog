@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+use App\Post;
+
+class DashBoardController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $posts = Post::orderBy('created_at', 'asc')->paginate(6);
+        return view('dashboard')->with('posts',$posts);
     }
 }

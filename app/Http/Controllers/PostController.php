@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+// use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,7 +16,7 @@ class PostController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth', ['except' => ['index', 'show','search']]);
     }
 
     public function index()
@@ -31,6 +33,12 @@ class PostController extends Controller
     public function create()
     {
         return view('posts.create');
+    }
+
+    public function search(Request $request){
+        $search=$request->get('search');
+        $posts=DB::table('posts')->where('title','LIKE','%'.$search.'%')->paginate(3);
+        return view('posts.index',['posts'=>$posts]);
     }
 
     /**
