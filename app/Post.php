@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Category;
 
 class Post extends Model
-{ //category_id
+{ 
     public function category(){
-        return $this->belongsTo(Categories::class);
+        return $this->belongsTo(Category::class);
     }
 }

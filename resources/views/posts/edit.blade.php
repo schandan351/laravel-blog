@@ -6,7 +6,22 @@
 {{Form::label('title','Title')}}
 {{Form::text('title',$post->title,['class'=>'form-control','placeholder'=>'Title'])}}
 {{Form::label('catagories','Catagories')}}
-{{Form::text('catagories',$post->catagories,['class'=>'form-control','name'=>'catagories'])}}
+
+<select class="custom-select custom-select-lg mb-3" name="categories" >
+    {{$x=$post->category_id}}
+    @foreach($categories as $category)
+    <option selected value="{{$category->id}}">{{$category->$x}}</option>
+    @endforeach
+
+    @foreach($categories as $category)
+        <option value="{{$category->id}}" >{{$category->name}}</option>
+
+    @endforeach
+    
+</select>
+
+
+
 {{Form::label('body','Body')}}
 {{Form::textarea('body',$post->body,['id'=>'mytextarea','class'=>'form-control','placeholder'=>'body','cols'=>'100','rows'=>'20'])}}
 {{Form::hidden('_method','PUT')}}

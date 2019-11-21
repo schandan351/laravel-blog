@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Category;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -23,7 +24,17 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'asc')->paginate(6);
+        $posts = Post::orderBy('created_at', 'asc')
+            ->join('categories', 'categories.id', 'posts.category_id')
+            ->where('draft', 0)
+            ->select(
+                'posts.id',
+                'posts.title',
+                'posts.body',
+                'posts.created_at',
+                'categories.name as category_name'
+            )
+            ->paginate(6);
         return view('posts.index')->with('posts', $posts);
     }
 
@@ -34,7 +45,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::all();
+        return view('posts.create', compact('categories'));
     }
 
     public function search(Request $request){
@@ -62,7 +74,7 @@ class PostController extends Controller
         $posts = new Post();
         $posts->title = $request->input('title');
         $posts->body = $request->input('body');
-        $posts->draft=$request->input('draft');
+        $posts->draft=$request->input('draft', 0);
         $posts->category_id=$request->input('categories');
        
         $posts->save();
@@ -93,7 +105,8 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
-        return view('posts.edit')->with('post', $post);
+        $categories = Category::all();
+        return view('posts.edit')->with('post', $post)->with('categories',$categories);
     }
 
     /**
@@ -113,6 +126,7 @@ class PostController extends Controller
         $posts = Post::find($id);
         $posts->title = $request->input('title');
         $posts->body = $request->input('body');
+        $posts->category_id=$request->input('categories');
         $posts->save();
         return redirect('/posts')->with('success', 'Post updated');
     }
