@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostsTable extends Migration
+class CreatePostTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,6 +18,9 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->mediumText('body');
             $table->string('photo')->nullable();
+            $table->unsignedInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
+            $table->boolean('draft')->default(0);
             $table->timestamps();
         });
     }

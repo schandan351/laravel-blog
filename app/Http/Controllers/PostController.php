@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
-// use DB;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -56,12 +56,14 @@ class PostController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'body' => 'required',
-            
+            'categories'=>'required'
         ]);
 
         $posts = new Post();
         $posts->title = $request->input('title');
         $posts->body = $request->input('body');
+        $posts->draft=$request->input('draft');
+        $posts->category_id=$request->input('categories');
        
         $posts->save();
         return redirect('/posts')->with('success', 'Post created');

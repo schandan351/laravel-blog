@@ -24,5 +24,6 @@ Route::get('dashboard', 'DashBoardController@index')->name('dashboard');
 
 Route::resource('posts','PostController');
 
+Route::resource('category','CategoriesController');
 Route::get('/search','PostController@search');
 

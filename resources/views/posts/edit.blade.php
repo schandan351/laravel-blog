@@ -5,6 +5,8 @@
 {!! Form::open(['action'=>['PostController@update',$post->id],'method'=>'POST']) !!}
 {{Form::label('title','Title')}}
 {{Form::text('title',$post->title,['class'=>'form-control','placeholder'=>'Title'])}}
+{{Form::label('catagories','Catagories')}}
+{{Form::text('catagories',$post->catagories,['class'=>'form-control','name'=>'catagories'])}}
 {{Form::label('body','Body')}}
 {{Form::textarea('body',$post->body,['id'=>'mytextarea','class'=>'form-control','placeholder'=>'body','cols'=>'100','rows'=>'20'])}}
 {{Form::hidden('_method','PUT')}}
