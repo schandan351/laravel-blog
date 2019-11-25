@@ -24,7 +24,7 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'asc')
+        $posts = Post::orderBy('created_at', 'desc')
             ->join('categories', 'categories.id', 'posts.category_id')
             ->where('draft', 0)
             ->select(
@@ -32,10 +32,18 @@ class PostController extends Controller
                 'posts.title',
                 'posts.body',
                 'posts.created_at',
+                'posts.draft',
+                'posts.photo',
+
                 'categories.name as category_name'
             )
             ->paginate(6);
         return view('posts.index')->with('posts', $posts);
+    }
+
+    public function draft(){
+        $posts=Post::where('draft',1)->get();
+        return view('posts.draft')->with('posts',$posts);
     }
 
     /**
@@ -51,8 +59,20 @@ class PostController extends Controller
 
     public function search(Request $request){
         $search=$request->get('search');
-        $posts=DB::table('posts')->where('body','LIKE','%'.$search.'%')->orWhere('title','LIKE','%'.$search.'%')->paginate(10);
-
+        $posts = Post::orderBy('created_at', 'desc')
+            ->join('categories', 'categories.id', 'posts.category_id')
+            ->where('body','LIKE','%'.$search.'%')
+            ->orWhere('title','LIKE','%'.$search.'%')
+            ->select(
+                'posts.id',
+                'posts.title',
+                'posts.body',
+                'posts.created_at',
+                'posts.draft',
+                'posts.photo',
+                'categories.name as category_name'
+            )
+            ->paginate(6);
 
         return view('posts.index',['posts'=>$posts]);
     }
@@ -68,14 +88,24 @@ class PostController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'body' => 'required',
-            'categories'=>'required'
+            'categories'=>'required',
+            'image'=>'required',
+            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $posts = new Post();
         $posts->title = $request->input('title');
         $posts->body = $request->input('body');
-        $posts->draft=$request->input('draft', 0);
+        $posts->draft=$request->input('draft',0);
         $posts->category_id=$request->input('categories');
+
+        if($files = $request->file('image'))
+        {
+            $destinationPath = 'image/'; // upload path
+            $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
+            $files->move($destinationPath, $profileImage);
+            $posts->photo=$profileImage;
+        }
        
         $posts->save();
         return redirect('/posts')->with('success', 'Post created');
@@ -121,12 +151,25 @@ class PostController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'body' => 'required',
+            'image'=>'required'
         ]);
 
         $posts = Post::find($id);
         $posts->title = $request->input('title');
         $posts->body = $request->input('body');
+        $posts->photo=$request->input('image');
+
+        // dd($posts->photo);
+        if($files = $request->file('image'))
+        {
+            $destinationPath = 'image/';
+            $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
+            $files->move($destinationPath, $profileImage);
+            $posts->photo=$profileImage;
+        }
+
         $posts->category_id=$request->input('categories');
+        $posts->draft=$request->input('draft',0);
         $posts->save();
         return redirect('/posts')->with('success', 'Post updated');
     }

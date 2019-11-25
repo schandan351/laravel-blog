@@ -26,4 +26,5 @@ Route::resource('posts','PostController');
 
 Route::resource('category','CategoriesController');
 Route::get('/search','PostController@search');
+Route::get('/draft','PostController@draft');
 

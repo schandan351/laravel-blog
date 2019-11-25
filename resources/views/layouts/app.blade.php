@@ -38,8 +38,10 @@
     </div>
     <script>
     tinymce.init({
-        selector: '#mytextarea'
+        selector: '#mytextarea',
     });
+
+    
     </script>
 </body>
 
