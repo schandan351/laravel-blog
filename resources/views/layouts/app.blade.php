@@ -27,21 +27,18 @@
 <body>
 
     @include('layouts.nav')
-    <main class="py-4">
+    <main class="container-fluid py-4">
         @yield('content')
     </main>
-    <div class="container">
-    <div class="row">
-        <div class="col-md-10">
-            @yield('posts')
-        </div>
-        <div class="col-md-2">
-            @yield('category')
-            
-        </div>
-       
-    </div>
-
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-8">
+                        @yield('posts')
+                    </div>
+                    <div class="col-md-2">
+                        @yield('category')
+                    </div>
+            </div>
     </div>
 
    

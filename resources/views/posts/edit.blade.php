@@ -14,7 +14,7 @@
 
 {{Form::file('image',['class'=>'form-control','placeholder'=>'image'])}}
 
-{{Form::label('catagories','Catagories')}}
+{{Form::label('categories','Categories')}}
 
 <select class="custom-select custom-select-lg mb-3" name="categories" >
   {{  $x=$post->category_id }}

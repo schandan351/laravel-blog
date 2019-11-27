@@ -1,30 +1,17 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
 
-                <div class="card-body">
+@section('content')
+
+    <div class="row">
+        <div class="col-md-8">
+                <div>
                     @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
                     </div>
                     @endif
-                    <a href="/posts/create" class="btn btn-primary btn-lg mx-2 my-2">Create</a>
-                    <a href="/category/create" class="btn btn-primary btn-lg mx-2 my-2">Add Category</a>
-                    <a href="/category" class="btn btn-primary btn-lg mx-2 my-2">List Category</a>
-                    <a href="/draft" class="btn btn-primary btn-lg mx-2 my-2">Drafts</a>
-
-
-
-                    <form class="form-inline my-4 my-lg-0" action="/search" method="GET">
-                        
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+                   
                     @foreach($posts as $post)
                         <ul  class="list-group mt-4">
                             <li class="list-group-item">
@@ -41,14 +28,33 @@
                             
                         </ul>
                     @endforeach
-                </div>
-            </div>
+            
+                    
+        </div>
+        <div class="row">
+            <div>{{$posts->links()}}</div>
         </div>
     </div>
 </div>
+
+@endsection
+@section('category')
+
+<a href="/posts/create" class="btn btn-primary btn-lg mx-2 my-2">Create</a>
+<a href="/category/create" class="btn btn-primary btn-lg mx-2 my-2">Add Category</a>
+<a href="/category" class="btn btn-primary btn-lg mx-2 my-2">List Category</a>
+<a href="/draft" class="btn btn-primary btn-lg mx-2 my-2">Drafts</a>
+
+<form class="form-inline my-4 my-lg-0" action="/search" method="GET">
+    
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
 @endsection
 
 @section('posts')
 
 
 @endsection
+

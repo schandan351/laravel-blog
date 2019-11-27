@@ -102,9 +102,9 @@ class PostController extends Controller
         if($files = $request->file('image'))
         {
             $destinationPath = 'image/'; // upload path
-            $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
-            $files->move($destinationPath, $profileImage);
-            $posts->photo=$profileImage;
+            $blogImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
+            $files->move($destinationPath, $blogImage);
+            $posts->photo=$blogImage;
         }
        
         $posts->save();
@@ -149,26 +149,30 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'body' => 'required',
-            'image'=>'required'
-        ]);
-
         $posts = Post::find($id);
         $posts->title = $request->input('title');
         $posts->body = $request->input('body');
         $posts->photo=$request->input('image');
 
-        // dd($posts->photo);
-        if($files = $request->file('image'))
+        // dd(($posts->photo));
+
+        if($request->hasFile('image'))
         {
             $destinationPath = 'image/';
-            $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
-            $files->move($destinationPath, $profileImage);
-            $posts->photo=$profileImage;
+            if($posts->photo !='' && File::exists($destinationPath.$posts->photo)){
+                File::delete($destinationPath.$posts->photo);
+            }
+            $file=$request->file('image');
+            $blogImage = date('YmdHis') . "." . $file->getClientOriginalExtension();
+            $file->move($destinationPath, $blogImage);
+            $posts->photo=$blogImage;
+          
+        }elseif($request->remove ==1 && File::exists('image/'.$posts->photo)){
+            File::delete('image/'.$posts->photo);
+            $posts->photo=null;
+
         }
 
         $posts->category_id=$request->input('categories');
