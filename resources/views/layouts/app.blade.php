@@ -30,12 +30,29 @@
     <main class="py-4">
         @yield('content')
     </main>
+    <div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            @yield('posts')
+        </div>
+        <div class="col-md-2">
+            @yield('category')
+            
+        </div>
+       
+    </div>
+
+    </div>
+
+   
 
     <div class="container">
         @include('layouts.messages')
-        @yield('posts')
+        @yield('create')
     </div>
-    </div>
+
+    
+    
     <script>
     tinymce.init({
         selector: '#mytextarea',

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-
-
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
-
+use App\Post;
 class CategoriesController extends Controller
 {
     /**
@@ -16,8 +15,27 @@ class CategoriesController extends Controller
      */
     public function index()
     {
+        
         $categories=Category::all();
         return view('category.index')->with('categories',$categories);
+    }
+
+    public function show_cat($id){
+        $posts = Post::orderBy('created_at', 'desc')
+        ->join('categories', 'categories.id', 'posts.category_id')
+        ->where('categories',$id)
+        ->select(
+            'posts.id',
+            'posts.title',
+            'posts.body',
+            'posts.created_at',
+            'posts.draft',
+            'posts.photo',
+            'categories.name as category_name'
+        )
+        ->paginate(6);
+
+        return view('category.index')->with('posts',$posts);
     }
 
     /**
@@ -36,12 +54,8 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $this->validate($request,
-            ['category' => 'required']
-        );
-
         $category=new Category();
         $category->name=$request->input('category');
         $category->save();
@@ -56,7 +70,13 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        //
+        $category=Category::findOrFail($id);
+       
+        if($category){
+            $posts=Post::where('category_id',$id)->get();
+            // dd($posts);
+            return view('category.post',compact('posts'));
+        }
     }
 
     /**
@@ -67,7 +87,7 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category=Categories::find($id);
+        $category=Category::find($id);
         return view('category.edit')->with('category',$category);
     }
 
@@ -78,9 +98,12 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
-        //
+        $category=Category::find($id);
+        $category->name=$request->input('category');
+        $category->save();
+        return Redirect('/category')->with('success','category updated');
     }
 
     /**
@@ -91,6 +114,8 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category=Category::find($id);
+        $category->delete();
+        return redirect('/category')->with('success','deleted successfully');
     }
 }

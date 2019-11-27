@@ -21,6 +21,12 @@
             @endif
 
             <td><a href="/posts/{{$post->id}}/edit" class="btn btn-primary">Edit</a></td>
+             <td>
+             {!!Form::open(['action'=>['PostController@destroy',$post->id],'method'=>'DELETE'])!!}
+              {{Form::submit('Delete',['class'=>'btn btn-danger'])}}
+            {!!Form::close()!!}
+             </td>
+
         </tr>
     @endforeach
 

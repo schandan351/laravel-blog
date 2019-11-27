@@ -1,10 +1,9 @@
 @extends('layouts.app')
 
+
 @section('posts')
 
-        <h1>Posts</h1>
-    
-    <div class="row ">
+<div class="row ">
         @if(count($posts) > 0)
 
         @foreach($posts as $post)
@@ -35,13 +34,10 @@
         @endif
 
     </div>
-    <div class="row">
-        <div>{{$posts->links()}}</div>
-    </div>
+   
 
 
 
 @endsection
 
 
-@extends('layouts.sidebar');

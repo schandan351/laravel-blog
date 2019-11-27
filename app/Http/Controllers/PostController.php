@@ -7,8 +7,7 @@ use App\Category;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
-
+use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -38,7 +37,15 @@ class PostController extends Controller
                 'categories.name as category_name'
             )
             ->paginate(6);
-        return view('posts.index')->with('posts', $posts);
+
+        $categories = Category::all();
+        
+        return view('posts.index',compact('categories','posts'));
+    }
+
+    public function getcats(){
+        $posts=Post::all()->groupBy('category_id');
+        return view('posts.index',compact('posts'));
     }
 
     public function draft(){
@@ -59,6 +66,7 @@ class PostController extends Controller
 
     public function search(Request $request){
         $search=$request->get('search');
+        $categories = Category::all();
         $posts = Post::orderBy('created_at', 'desc')
             ->join('categories', 'categories.id', 'posts.category_id')
             ->where('body','LIKE','%'.$search.'%')
@@ -74,7 +82,7 @@ class PostController extends Controller
             )
             ->paginate(6);
 
-        return view('posts.index',['posts'=>$posts]);
+        return view('posts.index',compact('categories','posts'));
     }
 
     /**
@@ -83,16 +91,8 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'body' => 'required',
-            'categories'=>'required',
-            'image'=>'required',
-            'image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
-
         $posts = new Post();
         $posts->title = $request->input('title');
         $posts->body = $request->input('body');
@@ -122,6 +122,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
+
+    
+
         $posts = Post::find($id);
         return view('posts.details')->with('posts', $posts);
     }
@@ -184,6 +187,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $post->delete();
-        return redirect('/posts')->with('success', 'Post deleted');
+        return redirect('/dashboard')->with('success', 'Post deleted');
     }
+
 }

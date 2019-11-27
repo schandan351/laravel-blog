@@ -7,7 +7,9 @@
     <p>Catagories: <a href="#"><b>{{$posts->catagories}}</b></a></p>
 
     <p>Posted By: <a href="">default</a></p>
-        <img src="/image/{{$posts->photo}}" alt="">
+        @if($posts->photo)
+            <img src="/image/{{$posts->photo}}" alt="">
+        @endif
     <p>{!!$posts->body!!}</p>
 
     @if(!Auth::guest())
